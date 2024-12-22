@@ -151,7 +151,7 @@ const Rekaman = () => {
   };
 
   React.useEffect(() => {
-    fetchData();
+    // fetchData();
   }, []);
 
   return (

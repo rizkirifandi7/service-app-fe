@@ -75,7 +75,7 @@ const Schedule = () => {
   };
 
   React.useEffect(() => {
-    fetchData();
+    // fetchData();
   }, []);
 
   return (

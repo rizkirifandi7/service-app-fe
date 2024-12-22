@@ -13,7 +13,7 @@ const MainLayout = () => {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        <Route element={<ProtectedRoute />}>
+        <Route >
           <Route
             element={
               <Sidebar>
