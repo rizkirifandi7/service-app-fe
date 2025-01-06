@@ -18,8 +18,6 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { updateData } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
@@ -33,23 +31,26 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "../ui/select";
+import axios from "axios";
 
 const FormSchema = z.object({
-	pic: z.string().nonempty("pic harus diisi."),
-	mesin: z.string().nonempty("Mesin harus diisi."),
-	tanggal_perbaikan: z.any(),
+	nama: z.string().nonempty("nama harus diisi."),
+	email: z.string().nonempty("Email harus diisi."),
+	password: z.string().nonempty("Password harus diisi."),
+	role: z.string().nonempty("Password harus diisi."),
 });
 
-const UpdateSchedule = ({ fetchData, rowData, id }) => {
+const UpdateUser = ({ fetchData, rowData, id }) => {
 	const [openTambah, setOpenTambah] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const form = useForm({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
-			pic: rowData.pic,
-			mesin: rowData.mesin,
-			tanggal_perbaikan: rowData.tanggal_perbaikan,
+			nama: rowData.nama,
+			password: rowData.password,
+			email: rowData.email,
+			role: rowData.role,
 		},
 	});
 
@@ -57,22 +58,25 @@ const UpdateSchedule = ({ fetchData, rowData, id }) => {
 		setIsLoading(true);
 		try {
 			const formData = new FormData();
-			formData.append("pic", data.pic);
-			formData.append("mesin", data.mesin);
-			formData.append("tanggal_perbaikan", data.tanggal_perbaikan);
+			formData.append("nama", data.nama);
+			formData.append("email", data.email);
+			formData.append("password", data.password);
+			formData.append("role", data.role);
 
-			const response = await updateData(`schedule/${id}`, data);
-			console.log(response);
+			const response = await axios.put(
+				`${import.meta.env.VITE_API_BASE_URL}/user/${id}`,
+				data
+			);
 
-			if (response.status === "success") {
-				toast.success("Schedule berhasil ditambahkan");
+			if (response.status === 200) {
+				toast.success("User berhasil diupdate");
 				form.reset();
 				setOpenTambah(false);
 				fetchData();
 			}
 		} catch (error) {
-			console.error("Error adding schedule:", error);
-			toast.error("Gagal menambahkan schedule");
+			console.error("Error adding user:", error);
+			toast.error("Gagal menambahkan user");
 		} finally {
 			setIsLoading(false);
 		}
@@ -87,8 +91,8 @@ const UpdateSchedule = ({ fetchData, rowData, id }) => {
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>
-					<DialogTitle>Update Schedule</DialogTitle>
-					<DialogDescription>Updatekan schedule baru.</DialogDescription>
+					<DialogTitle>Update User</DialogTitle>
+					<DialogDescription>Updatekan user baru.</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
 					<form
@@ -101,39 +105,10 @@ const UpdateSchedule = ({ fetchData, rowData, id }) => {
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Nama</FormLabel>
-									<Select
-										onValueChange={field.onChange}
-										defaultValue={field.value}
-									>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue placeholder="Pilih nama" />
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											<SelectItem value="Ikhsan">Ikhsan</SelectItem>
-											<SelectItem value="Agung">Agung</SelectItem>
-											<SelectItem value="Reza">Reza</SelectItem>
-											<SelectItem value="Sahroni">Sahroni</SelectItem>
-											<SelectItem value="Sumantoko">Sumantoko</SelectItem>
-											<SelectItem value="Rafli">Rafli</SelectItem>
-											<SelectItem value="Abid">Abid</SelectItem>
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="mesin"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Mesin</FormLabel>
 									<FormControl>
 										<Input
 											className="shadow-none"
-											placeholder="masukkan mesin..."
+											placeholder="masukkan nama..."
 											{...field}
 											type="text"
 										/>
@@ -142,10 +117,66 @@ const UpdateSchedule = ({ fetchData, rowData, id }) => {
 								</FormItem>
 							)}
 						/>
-						<div className="w-full space-y-2">
-							<Label>Waktu Mulai Mesin</Label>
-							<Input type="date" {...form.register("waktu_mulai_mesin")} />
-						</div>
+						<FormField
+							control={form.control}
+							name="email"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Email</FormLabel>
+									<FormControl>
+										<Input
+											className="shadow-none"
+											placeholder="masukkan email..."
+											{...field}
+											type="text"
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="password"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Password</FormLabel>
+									<FormControl>
+										<Input
+											className="shadow-none"
+											placeholder="masukkan password..."
+											{...field}
+											type="password"
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="role"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Role</FormLabel>
+									<Select
+										onValueChange={field.onChange}
+										defaultValue={field.value}
+									>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue placeholder="Pilih role" />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											<SelectItem value="admin">Admin</SelectItem>
+											<SelectItem value="pegawai">Pegawai</SelectItem>
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<DialogFooter>
 							<Button
 								type="submit"
@@ -162,4 +193,4 @@ const UpdateSchedule = ({ fetchData, rowData, id }) => {
 	);
 };
 
-export default UpdateSchedule;
+export default UpdateUser;

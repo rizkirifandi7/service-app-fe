@@ -1,9 +1,15 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const getAllData = async (url) => {
 	try {
 		const response = await axios.get(
-			`${import.meta.env.VITE_API_BASE_URL}/${url}`
+			`${import.meta.env.VITE_API_BASE_URL}/${url}`,
+			{
+				headers: {
+					Authorization: `Bearer ${Cookies.get("auth_session")}`,
+				},
+			}
 		);
 		return response.data;
 	} catch (error) {
@@ -22,11 +28,36 @@ const fetchDataById = async (url, id) => {
 	}
 };
 
-const addData = async (url, data) => {
+const addData = async (url, data, token) => {
 	try {
 		const response = await axios.post(
 			`${import.meta.env.VITE_API_BASE_URL}/${url}`,
-			data
+			data,
+			{
+				headers: {
+					"Content-Type": "multipart/form-data",
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error("Error adding data:", error);
+		return null;
+	}
+};
+
+const addDataSchedule = async (url, data) => {
+	try {
+		const response = await axios.post(
+			`${import.meta.env.VITE_API_BASE_URL}/${url}`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${Cookies.get("auth_session")}`,
+				},
+			}
 		);
 		return response.data;
 	} catch (error) {
@@ -76,4 +107,26 @@ const Login = async ({ data }) => {
 	}
 };
 
-export { getAllData, fetchDataById, addData, updateData, deleteData, Login };
+const register = async ({ data }) => {
+	try {
+		const response = await axios.post(
+			`${import.meta.env.VITE_API_BASE_URL}/auth/register`,
+			data
+		);
+		return response.data;
+	} catch (error) {
+		console.error("Error login:", error);
+		return null;
+	}
+};
+
+export {
+	getAllData,
+	fetchDataById,
+	addData,
+	updateData,
+	deleteData,
+	Login,
+	addDataSchedule,
+	register,
+};
