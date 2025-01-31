@@ -70,7 +70,7 @@ const AppSidebar = ({ ...props }) => {
 			<SidebarHeader className="flex flex-row items-center h-16 border-b">
 				<img src="/logobrand.png" alt="" className="w-12 h-12" />
 				<div className="">
-					<h1 className="text-base font-semibold">Service App</h1>
+				<h1 className="text-base font-semibold">PE Trouble Report</h1>
 					<p className="text-sm text-muted-foreground">Sistem Informasi</p>
 				</div>
 			</SidebarHeader>

@@ -19,10 +19,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addData } from "@/lib/api";
+import { addData, getAllData } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -51,7 +51,19 @@ const FormSchema = z.object({
 const TambahRekaman = ({ fetchData }) => {
 	const [openTambah, setOpenTambah] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [dataUser, setDataUser] = useState([]);
 	const token = Cookies.get("auth_session");
+
+	const fetchDataUser = async () => {
+		const response = await getAllData("user");
+		if (response) {
+			setDataUser(response.data);
+		}
+	};
+
+	React.useEffect(() => {
+		fetchDataUser();
+	}, []);
 
 	const form = useForm({
 		resolver: zodResolver(FormSchema),
@@ -132,13 +144,11 @@ const TambahRekaman = ({ fetchData }) => {
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											<SelectItem value="Ikhsan">Ikhsan</SelectItem>
-											<SelectItem value="Agung">Agung</SelectItem>
-											<SelectItem value="Reza">Reza</SelectItem>
-											<SelectItem value="Sahroni">Sahroni</SelectItem>
-											<SelectItem value="Sumantoko">Sumantoko</SelectItem>
-											<SelectItem value="Rafli">Rafli</SelectItem>
-											<SelectItem value="Abid">Abid</SelectItem>
+											{dataUser.map((user) => (
+												<SelectItem key={user.id} value={user.nama}>
+													{user.nama}
+												</SelectItem>
+											))}
 										</SelectContent>
 									</Select>
 									<FormMessage />

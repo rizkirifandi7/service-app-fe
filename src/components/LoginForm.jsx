@@ -82,7 +82,7 @@ const LoginForm = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleLogin)}
-              className="space-y-5"
+              className="space-y-6"
             >
               <FormField
                 control={form.control}
@@ -92,7 +92,7 @@ const LoginForm = () => {
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
-                        className="py-6"
+                        className="py-5"
                         placeholder="m@example.com"
                         {...field}
                         type="text"
@@ -110,7 +110,7 @@ const LoginForm = () => {
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
-                        className="py-6"
+                        className="py-5"
                         placeholder="*********"
                         {...field}
                         type="password"
