@@ -1,9 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import DataTable from "../../components/DataTable";
-import HapusRekaman from "@/components/rekaman/HapusRekaman";
-import TambahRekaman from "@/components/rekaman/TambahRekaman";
 import { getAllData } from "@/lib/api";
-import UpdateRekaman from "@/components/rekaman/UpdateRekaman";
 import {
 	Dialog,
 	DialogContent,
@@ -11,11 +8,8 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import Cookies from "js-cookie";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Eye } from "lucide-react";
 
-const Rekaman = () => {
+const RekamanHome = () => {
 	const [data, setData] = useState([]);
 
 	const columns = useMemo(
@@ -125,25 +119,6 @@ const Rekaman = () => {
 					</div>
 				),
 			},
-			{
-				id: "actions",
-				enableHiding: false,
-				cell: ({ row }) => {
-					const id = row.original.id;
-					const rowData = row.original;
-					return (
-						<div className="flex items-center gap-2">
-							<UpdateRekaman fetchData={fetchData} id={id} rowData={rowData} />
-							<HapusRekaman id={id} fetchData={fetchData} />
-							<Link to={`/laporan/${id}`}>
-								<Button variant="outline" size="icon">
-									<Eye />
-								</Button>
-							</Link>
-						</div>
-					);
-				},
-			},
 		],
 		[]
 	);
@@ -173,8 +148,7 @@ const Rekaman = () => {
 			<DataTable
 				columns={columns}
 				data={data}
-				TambahComponent={() => <TambahRekaman fetchData={fetchData} />}
-				title="Dashboard Rekaman"
+				title="Laporan Rekaman"
 				search="nama"
 				pageSize={5}
 			/>
@@ -182,4 +156,4 @@ const Rekaman = () => {
 	);
 };
 
-export default Rekaman;
+export default RekamanHome;

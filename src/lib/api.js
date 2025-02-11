@@ -18,9 +18,9 @@ const getAllData = async (url) => {
 	}
 };
 
-const fetchDataById = async (url, id) => {
+const getDataById = async (url) => {
 	try {
-		const response = await axios.get(`${url}/${id}`);
+		const response = await axios.get(`${url}`);
 		return response.data;
 	} catch (error) {
 		console.error("Error fetching data:", error);
@@ -122,7 +122,7 @@ const register = async ({ data }) => {
 
 export {
 	getAllData,
-	fetchDataById,
+	getDataById,
 	addData,
 	updateData,
 	deleteData,

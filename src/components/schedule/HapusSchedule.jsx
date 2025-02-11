@@ -43,7 +43,7 @@ const HapusSchedule = ({ id, fetchData }) => {
           <Button
             variant="outline"
             size="icon"
-            className="shadow-none "
+            className="shadow-none bg-red-500 text-white"
             onClick={() => {
               setSelectedId(id);
             }}

@@ -85,7 +85,7 @@ const TambahUser = ({ fetchData }) => {
 	return (
 		<Dialog open={openTambah} onOpenChange={setOpenTambah}>
 			<DialogTrigger asChild>
-				<Button>
+				<Button className="bg-blue-500">
 					<PlusCircle />
 					Tambah User
 				</Button>
@@ -181,7 +181,7 @@ const TambahUser = ({ fetchData }) => {
 						<DialogFooter>
 							<Button
 								type="submit"
-								className="w-full mt-2"
+								className="w-full mt-2 bg-blue-500"
 								disabled={isLoading}
 							>
 								{isLoading ? "Loading..." : "Submit"}

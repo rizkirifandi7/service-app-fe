@@ -180,7 +180,7 @@ const UpdateUser = ({ fetchData, rowData, id }) => {
 						<DialogFooter>
 							<Button
 								type="submit"
-								className="w-full mt-2"
+								className="w-full mt-2 bg-blue-500"
 								disabled={isLoading}
 							>
 								{isLoading ? "Loading..." : "Submit"}

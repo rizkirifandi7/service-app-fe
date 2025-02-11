@@ -19,10 +19,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { updateData } from "@/lib/api";
+import { getAllData, getDataById, updateData } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -36,33 +36,79 @@ import {
 
 const FormSchema = z.object({
 	pic: z.string().nonempty("pic harus diisi."),
+	line: z.string().nonempty("Line harus diisi."),
 	mesin: z.string().nonempty("Mesin harus diisi."),
-	tanggal_perbaikan: z.any(),
+	kerusakan: z.string().nonempty("Kerusakan harus diisi."),
+	maintenance: z.string().nonempty("Maintenance harus diisi."),
+	tanggal: z.any(),
+	status: z.any(),
 });
 
-const UpdateSchedule = ({ fetchData, rowData, id }) => {
+const UpdateSchedule = ({ fetchData, id }) => {
 	const [openTambah, setOpenTambah] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [dataUser, setDataUser] = useState([]);
+
+	const fetchDataUser = async () => {
+		const response = await getAllData("user");
+		if (response) {
+			setDataUser(response.data);
+		}
+	};
+
+	useEffect(() => {
+		fetchDataUser();
+	}, []);
 
 	const form = useForm({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
-			pic: rowData.pic,
-			mesin: rowData.mesin,
-			tanggal_perbaikan: rowData.tanggal_perbaikan,
+			pic: "",
+			line: "",
+			mesin: "",
+			kerusakan: "",
+			maintenance: "",
+			tanggal: "",
+			status: "",
 		},
 	});
+
+	const fetchDataById = async () => {
+		try {
+			const response = await getDataById(
+				`${import.meta.env.VITE_API_BASE_URL}/schedule/${id}`
+			);
+			form.reset({
+				pic: response.data.pic,
+				line: response.data.line,
+				mesin: response.data.mesin,
+				kerusakan: response.data.kerusakan,
+				maintenance: response.data.maintenance,
+				tanggal: response.data.tanggal,
+				status: response.data.status,
+			});
+		} catch (error) {
+			console.error("Failed to fetch data", error);
+		}
+	};
+
+	useEffect(() => {
+		fetchDataById();
+	}, [id]);
 
 	const handleUpdate = async (data) => {
 		setIsLoading(true);
 		try {
 			const formData = new FormData();
 			formData.append("pic", data.pic);
+			formData.append("line", data.line);
 			formData.append("mesin", data.mesin);
-			formData.append("tanggal_perbaikan", data.tanggal_perbaikan);
+			formData.append("kerusakan", data.kerusakan);
+			formData.append("maintenance", data.maintenance);
+			formData.append("tanggal", data.tanggal);
+			formData.append("status", data.status);
 
 			const response = await updateData(`schedule/${id}`, data);
-			console.log(response);
 
 			if (response.status === "success") {
 				toast.success("Schedule berhasil ditambahkan");
@@ -81,7 +127,11 @@ const UpdateSchedule = ({ fetchData, rowData, id }) => {
 	return (
 		<Dialog open={openTambah} onOpenChange={setOpenTambah}>
 			<DialogTrigger asChild>
-				<Button variant="outline" size="icon" className="shadow-none">
+				<Button
+					variant="outline"
+					size="icon"
+					className="shadow-none bg-blue-500 text-white"
+				>
 					<Pencil />
 				</Button>
 			</DialogTrigger>
@@ -97,27 +147,64 @@ const UpdateSchedule = ({ fetchData, rowData, id }) => {
 					>
 						<FormField
 							control={form.control}
-							name="nama"
+							name="pic"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Nama</FormLabel>
+									<FormLabel>PIC</FormLabel>
 									<Select
 										onValueChange={field.onChange}
 										defaultValue={field.value}
 									>
 										<FormControl>
 											<SelectTrigger>
-												<SelectValue placeholder="Pilih nama" />
+												<SelectValue placeholder="Pilih pic" />
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											<SelectItem value="Ikhsan">Ikhsan</SelectItem>
-											<SelectItem value="Agung">Agung</SelectItem>
-											<SelectItem value="Reza">Reza</SelectItem>
-											<SelectItem value="Sahroni">Sahroni</SelectItem>
-											<SelectItem value="Sumantoko">Sumantoko</SelectItem>
-											<SelectItem value="Rafli">Rafli</SelectItem>
-											<SelectItem value="Abid">Abid</SelectItem>
+											{dataUser.map((user) => (
+												<SelectItem key={user.id} value={user.nama}>
+													{user.nama}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="line"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Line</FormLabel>
+									<Select
+										onValueChange={field.onChange}
+										defaultValue={field.value}
+									>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue placeholder="Pilih line" />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											<SelectItem value="Injection">Injection</SelectItem>
+											<SelectItem value="Vacuum Forming">
+												Vacuum Forming
+											</SelectItem>
+											<SelectItem value="PCM">PCM</SelectItem>
+											<SelectItem value="Urethane Door">
+												Urethane Door
+											</SelectItem>
+											<SelectItem value="Urethane Cabinet">
+												Urethane Cabinet
+											</SelectItem>
+											<SelectItem value="Docking">Docking</SelectItem>
+											<SelectItem value="Gas Charge">Gas Charge</SelectItem>
+											<SelectItem value="Clocking">Clocking</SelectItem>
+											<SelectItem value="Vacuum Pump">Vacuum Pump</SelectItem>
+											<SelectItem value="Running Test">Running Test</SelectItem>
+											<SelectItem value="Final">Final</SelectItem>
 										</SelectContent>
 									</Select>
 									<FormMessage />
@@ -142,10 +229,70 @@ const UpdateSchedule = ({ fetchData, rowData, id }) => {
 								</FormItem>
 							)}
 						/>
+						<FormField
+							control={form.control}
+							name="kerusakan"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Kerusakan</FormLabel>
+									<FormControl>
+										<Input
+											className="shadow-none"
+											placeholder="masukkan kerusakan..."
+											{...field}
+											type="text"
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="maintenance"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Maintenance</FormLabel>
+									<FormControl>
+										<Input
+											className="shadow-none"
+											placeholder="masukkan maintenance..."
+											{...field}
+											type="text"
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<div className="w-full space-y-2">
-							<Label>Waktu Mulai Mesin</Label>
-							<Input type="date" {...form.register("waktu_mulai_mesin")} />
+							<Label>Tanggal Perbaikan</Label>
+							<Input type="date" {...form.register("tanggal")} />
 						</div>
+						<FormField
+							control={form.control}
+							name="status"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Status</FormLabel>
+									<Select
+										onValueChange={field.onChange}
+										defaultValue={field.value}
+									>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue placeholder="Pilih status" />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											<SelectItem value="Ongoing">Ongoing</SelectItem>
+											<SelectItem value="Completed">Completed</SelectItem>
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<DialogFooter>
 							<Button
 								type="submit"

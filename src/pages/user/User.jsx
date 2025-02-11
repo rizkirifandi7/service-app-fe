@@ -49,7 +49,7 @@ const User = () => {
 	const fetchData = async () => {
 		try {
 			const response = await getAllData("user");
-			const data = response;
+			const data = response.data;
 			setData(data);
 		} catch (error) {
 			console.error("Error fetching data:", error);

@@ -4,7 +4,6 @@ import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
@@ -35,6 +34,7 @@ import {
 } from "../ui/select";
 
 import Cookies from "js-cookie";
+import { Textarea } from "../ui/textarea";
 
 const FormSchema = z.object({
 	nama: z.string().nonempty("Nama harus diisi."),
@@ -113,183 +113,196 @@ const TambahRekaman = ({ fetchData }) => {
 	return (
 		<Dialog open={openTambah} onOpenChange={setOpenTambah}>
 			<DialogTrigger asChild>
-				<Button>
+				<Button className="bg-blue-500">
 					<PlusCircle />
 					Tambah Laporan
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="sm:max-w-[725px]">
 				<DialogHeader>
 					<DialogTitle>Tambah Laporan</DialogTitle>
 					<DialogDescription>Tambahkan laporan baru.</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(handleTambah)}
-						className="space-y-3"
-					>
-						<FormField
-							control={form.control}
-							name="nama"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Nama</FormLabel>
-									<Select
-										onValueChange={field.onChange}
-										defaultValue={field.value}
-									>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue placeholder="Pilih nama" />
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{dataUser.map((user) => (
-												<SelectItem key={user.id} value={user.nama}>
-													{user.nama}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="line"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Line</FormLabel>
-									<Select
-										onValueChange={field.onChange}
-										defaultValue={field.value}
-									>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue placeholder="Pilih line" />
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											<SelectItem value="Injection">Injection</SelectItem>
-											<SelectItem value="Vacuum Forming">
-												Vacuum Forming
-											</SelectItem>
-											<SelectItem value="PCM">PCM</SelectItem>
-											<SelectItem value="Urethane Door">
-												Urethane Door
-											</SelectItem>
-											<SelectItem value="Urethane Cabinet">
-												Urethane Cabinet
-											</SelectItem>
-											<SelectItem value="Clocking">Clocking</SelectItem>
-											<SelectItem value="Final">Final</SelectItem>
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="mesin"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Mesin</FormLabel>
-									<FormControl>
+					<form onSubmit={form.handleSubmit(handleTambah)}>
+						<div className="flex items-start gap-6">
+							<div className="w-full space-y-3">
+								<FormField
+									control={form.control}
+									name="nama"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Nama</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												defaultValue={field.value}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue placeholder="Pilih nama" />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													{dataUser.map((user) => (
+														<SelectItem key={user.id} value={user.nama}>
+															{user.nama}
+														</SelectItem>
+													))}
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="line"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Line</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												defaultValue={field.value}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue placeholder="Pilih line" />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													<SelectItem value="Injection">Injection</SelectItem>
+													<SelectItem value="Vacuum Forming">
+														Vacuum Forming
+													</SelectItem>
+													<SelectItem value="PCM">PCM</SelectItem>
+													<SelectItem value="Urethane Door">
+														Urethane Door
+													</SelectItem>
+													<SelectItem value="Urethane Cabinet">
+														Urethane Cabinet
+													</SelectItem>
+													<SelectItem value="Docking">Docking</SelectItem>
+													<SelectItem value="Gas Charge">Gas Charge</SelectItem>
+													<SelectItem value="Clocking">Clocking</SelectItem>
+													<SelectItem value="Vacuum Pump">
+														Vacuum Pump
+													</SelectItem>
+													<SelectItem value="Running Test">
+														Running Test
+													</SelectItem>
+													<SelectItem value="Final">Final</SelectItem>
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<div className="flex items-center justify-between w-full gap-4">
+									<div className="w-full space-y-2">
+										<Label>Waktu Mulai Mesin</Label>
 										<Input
-											className="shadow-none"
-											placeholder="masukkan mesin..."
-											{...field}
-											type="text"
+											type="time"
+											{...form.register("waktu_mulai_mesin")}
 										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="deskripsi_kerusakan"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Deskripsi Kerusakan</FormLabel>
-									<FormControl>
+									</div>
+									<span className="pt-7">-</span>
+									<div className="w-full space-y-2">
+										<Label>Waktu selesai Mesin</Label>
 										<Input
-											className="shadow-none"
-											placeholder="masukkan deskripsi kerusakan..."
-											{...field}
-											type="text"
+											type="time"
+											{...form.register("waktu_selesai_mesin")}
 										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="tindakan"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Tindakan</FormLabel>
-									<FormControl>
-										<Input
-											className="shadow-none"
-											placeholder="masukkan tindakan..."
-											{...field}
-											type="text"
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="analisa"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Analisa</FormLabel>
-									<FormControl>
-										<Input
-											className="shadow-none"
-											placeholder="masukkan analisa..."
-											{...field}
-											type="text"
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<div className="flex items-center justify-between w-full gap-4">
-							<div className="w-full space-y-2">
-								<Label>Waktu Mulai Mesin</Label>
-								<Input type="date" {...form.register("waktu_mulai_mesin")} />
+									</div>
+								</div>
+								<div className="space-y-2">
+									<Label>Gambar</Label>
+									<Input
+										type="file"
+										className="shadow-none h-full py-1.5"
+										onChange={(e) => form.setValue("gambar", e.target.files)}
+									/>
+								</div>
 							</div>
-							<span className="pt-7">-</span>
-							<div className="w-full space-y-2">
-								<Label>Waktu selesai Mesin</Label>
-								<Input type="date" {...form.register("waktu_selesai_mesin")} />
+							<div className="w-full space-y-3">
+								<FormField
+									control={form.control}
+									name="mesin"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Mesin</FormLabel>
+											<FormControl>
+												<Input
+													className="shadow-none"
+													placeholder="masukkan mesin..."
+													{...field}
+													type="text"
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="deskripsi_kerusakan"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Deskripsi Kerusakan</FormLabel>
+											<FormControl>
+												<Textarea
+													className="shadow-none resize-none"
+													placeholder="masukkan deskripsi kerusakan..."
+													{...field}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="tindakan"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Tindakan</FormLabel>
+											<FormControl>
+												<Textarea
+													className="shadow-none resize-none"
+													placeholder="masukkan tindakan..."
+													{...field}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="analisa"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Analisa</FormLabel>
+											<FormControl>
+												<Textarea
+													className="shadow-none resize-none"
+													placeholder="masukkan analisa..."
+													{...field}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
 							</div>
 						</div>
-						<div className="space-y-2">
-							<Label>Gambar</Label>
-							<Input
-								type="file"
-								className="shadow-none h-full py-1.5"
-								onChange={(e) => form.setValue("gambar", e.target.files)}
-							/>
-						</div>
-						<DialogFooter>
-							<Button
-								type="submit"
-								className="w-full mt-2"
-								disabled={isLoading}
-							>
-								{isLoading ? "Sedang menambahkan..." : "Simpan"}
-							</Button>
-						</DialogFooter>
+
+						<Button
+							type="submit"
+							className="w-full mt-4 bg-blue-500"
+							disabled={isLoading}
+						>
+							{isLoading ? "Sedang menambahkan..." : "Simpan"}
+						</Button>
 					</form>
 				</Form>
 			</DialogContent>

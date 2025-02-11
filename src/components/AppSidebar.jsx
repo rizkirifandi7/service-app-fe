@@ -11,7 +11,7 @@ import {
 	SidebarRail,
 } from "@/components/ui/sidebar";
 import Cookies from "js-cookie";
-import { Calendar, House, NotebookPen, User } from "lucide-react";
+import { Calendar, FileDown, House, NotebookPen, User } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -19,7 +19,7 @@ const AppSidebar = ({ ...props }) => {
 	const [selectedUrl, setSelectedUrl] = useState("");
 	const token = JSON.parse(atob(Cookies.get("auth_session").split(".")[1]));
 
-	const isAdmin = token.role === "admin"; // Check if the user is an admin
+	const isAdmin = token.role === "admin";
 
 	const data = {
 		navMain: [
@@ -44,6 +44,12 @@ const AppSidebar = ({ ...props }) => {
 						url: "/laporan",
 						icons: <NotebookPen />,
 						isActive: selectedUrl === "/laporan",
+					},
+					{
+						title: "Unduh Laporan",
+						url: "/unduh",
+						icons: <FileDown />,
+						isActive: selectedUrl === "/unduh",
 					},
 					// Conditionally render the User menu item
 					...(isAdmin

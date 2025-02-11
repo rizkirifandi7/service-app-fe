@@ -58,7 +58,7 @@ const DataTable = ({
   });
 
   return (
-    <div className="w-full mt-4 max-w-sm md:max-w-full">
+    <div className="w-full max-w-sm md:max-w-full">
       <h1 className="font-bold text-xl md:text-2xl">{title}</h1>
       <div className="flex flex-col md:flex-row md:items-center py-4 gap-2">
         <Input
