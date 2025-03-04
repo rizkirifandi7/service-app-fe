@@ -38,14 +38,16 @@ const Rekaman = () => {
 				accessorKey: "mesin",
 				header: "Mesin",
 				cell: ({ row }) => (
-					<div className="capitalize">{row.getValue("mesin")}</div>
+					<div className="capitalize truncate w-[100px]">
+						{row.getValue("mesin")}
+					</div>
 				),
 			},
 			{
 				accessorKey: "deskripsi_kerusakan",
 				header: "Kerusakan",
 				cell: ({ row }) => (
-					<div className="capitalize">
+					<div className="capitalize truncate w-[100px]">
 						{row.getValue("deskripsi_kerusakan")}
 					</div>
 				),
@@ -54,14 +56,18 @@ const Rekaman = () => {
 				accessorKey: "tindakan",
 				header: "Action",
 				cell: ({ row }) => (
-					<div className="capitalize">{row.getValue("tindakan")}</div>
+					<div className="capitalize truncate w-[100px]">
+						{row.getValue("tindakan")}
+					</div>
 				),
 			},
 			{
 				accessorKey: "analisa",
 				header: "Analisa",
 				cell: ({ row }) => (
-					<div className="capitalize">{row.getValue("analisa")}</div>
+					<div className="capitalize truncate w-[300px]">
+						{row.getValue("analisa")}
+					</div>
 				),
 			},
 			{

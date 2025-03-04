@@ -171,7 +171,7 @@ const TambahUser = ({ fetchData }) => {
 										</FormControl>
 										<SelectContent>
 											<SelectItem value="admin">Admin</SelectItem>
-											<SelectItem value="pegawai">Pegawai</SelectItem>
+											<SelectItem value="pegawai">Karyawan</SelectItem>
 										</SelectContent>
 									</Select>
 									<FormMessage />

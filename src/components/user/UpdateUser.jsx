@@ -36,7 +36,7 @@ import axios from "axios";
 const FormSchema = z.object({
 	nama: z.string().nonempty("nama harus diisi."),
 	email: z.string().nonempty("Email harus diisi."),
-	password: z.string().nonempty("Password harus diisi."),
+	password: z.any(),
 	role: z.string().nonempty("Password harus diisi."),
 });
 
@@ -48,7 +48,7 @@ const UpdateUser = ({ fetchData, rowData, id }) => {
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
 			nama: rowData.nama,
-			password: rowData.password,
+			password: null,
 			email: rowData.email,
 			role: rowData.role,
 		},
@@ -170,7 +170,7 @@ const UpdateUser = ({ fetchData, rowData, id }) => {
 										</FormControl>
 										<SelectContent>
 											<SelectItem value="admin">Admin</SelectItem>
-											<SelectItem value="pegawai">Pegawai</SelectItem>
+											<SelectItem value="pegawai">Karyawan</SelectItem>
 										</SelectContent>
 									</Select>
 									<FormMessage />

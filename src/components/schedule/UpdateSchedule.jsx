@@ -40,6 +40,7 @@ const FormSchema = z.object({
 	mesin: z.string().nonempty("Mesin harus diisi."),
 	kerusakan: z.string().nonempty("Kerusakan harus diisi."),
 	maintenance: z.string().nonempty("Maintenance harus diisi."),
+	overtime: z.any(),
 	tanggal: z.any(),
 	status: z.any(),
 });
@@ -70,6 +71,7 @@ const UpdateSchedule = ({ fetchData, id }) => {
 			maintenance: "",
 			tanggal: "",
 			status: "",
+			overtime: "",
 		},
 	});
 
@@ -86,6 +88,7 @@ const UpdateSchedule = ({ fetchData, id }) => {
 				maintenance: response.data.maintenance,
 				tanggal: response.data.tanggal,
 				status: response.data.status,
+				overtime: response.data.overtime,
 			});
 		} catch (error) {
 			console.error("Failed to fetch data", error);
@@ -107,11 +110,12 @@ const UpdateSchedule = ({ fetchData, id }) => {
 			formData.append("maintenance", data.maintenance);
 			formData.append("tanggal", data.tanggal);
 			formData.append("status", data.status);
+			formData.append("overtime", data.overtime);
 
 			const response = await updateData(`schedule/${id}`, data);
 
 			if (response.status === "success") {
-				toast.success("Schedule berhasil ditambahkan");
+				toast.success("Schedule berhasil diupdate");
 				form.reset();
 				setOpenTambah(false);
 				fetchData();
@@ -269,6 +273,30 @@ const UpdateSchedule = ({ fetchData, id }) => {
 							<Label>Tanggal Perbaikan</Label>
 							<Input type="date" {...form.register("tanggal")} />
 						</div>
+						<FormField
+							control={form.control}
+							name="overtime"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Overtime</FormLabel>
+									<Select
+										onValueChange={field.onChange}
+										defaultValue={field.value}
+									>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue placeholder="Pilih overtime" />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											<SelectItem value="Lembur">Lembur</SelectItem>
+											<SelectItem value="Tidak Lembur">Tidak Lembur</SelectItem>
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<FormField
 							control={form.control}
 							name="status"

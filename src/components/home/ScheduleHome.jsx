@@ -24,13 +24,13 @@ const ScheduleHome = () => {
 	);
 
 	return (
-		<div className="border p-4 rounded-md bg-white">
+		<div className="border p-4 rounded-md bg-white max-w-3xl">
 			<h1 className="text-2xl font-bold">Schedule</h1>
 			<h2 className="text-lg mt-2">
 				{format(today, "EEEE, dd MMMM yyyy", { locale: id })}
 			</h2>
 
-			<div className="mt-4">
+			<div className="mt-4 w-full">
 				<div className="space-y-2">
 					{todaySchedule
 						.filter((item) => item.status !== "Completed")
@@ -42,13 +42,13 @@ const ScheduleHome = () => {
 								<p>
 									<strong>Line:</strong> {item.line}
 								</p>
-								<p className="truncate">
+								<p className="truncate w-1/2">
 									<strong>Mesin:</strong> {item.mesin}
 								</p>
-								<p className="truncate">
+								<p className="truncate w-1/2">
 									<strong>Kerusakan:</strong> {item.kerusakan}
 								</p>
-								<p className="truncate">
+								<p className="truncate w-1/2">
 									<strong>Maintenance:</strong> {item.maintenance}
 								</p>
 								<p>

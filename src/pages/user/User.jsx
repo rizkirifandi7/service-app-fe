@@ -27,7 +27,7 @@ const User = () => {
 			accessorKey: "role",
 			header: "Role",
 			cell: ({ row }) => (
-				<div className="capitalize">{row.getValue("role")}</div>
+				<div className="capitalize">{row.getValue("role") === "pegawai" ? "karyawan" : "admin"}</div>
 			),
 		},
 		{

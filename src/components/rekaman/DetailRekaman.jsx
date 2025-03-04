@@ -12,9 +12,11 @@ import {
 import { ArrowLeft } from "lucide-react";
 
 const DetailItem = ({ title, content }) => (
-	<div>
+	<div className="max-w-7xl">
 		<h2 className="text-sm font-semibold mb-1.5">{title}</h2>
-		<p className="border p-3 rounded-md text-sm">{content}</p>
+		<p className="border p-3 rounded-md text-sm whitespace-pre-wrap break-words">
+			{content}
+		</p>
 	</div>
 );
 
@@ -42,40 +44,47 @@ const DetailRekaman = () => {
 				<ArrowLeft className="inline-block" size={16} /> Kembali
 			</Link>
 
-			<Card className="rounded-md">
-				<CardHeader>
-					<CardTitle className="text-xl font-bold">Detail Rekaman</CardTitle>
-					<CardDescription>Detail rekaman untuk ID: {id}</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<div className="flex flex-col space-y-4">
-						<DetailItem title="PIC" content={rekaman.nama} />
-						<DetailItem title="Line" content={rekaman.line} />
-						<DetailItem title="Mesin" content={rekaman.mesin} />
-						<DetailItem title="Kerusakan" content={rekaman.deskripsi_kerusakan} />
-						<DetailItem title="Tindakan" content={rekaman.tindakan} />
-						<DetailItem title="Analisa" content={rekaman.analisa} />
-						<DetailItem
-							title="Waktu Mulai Mesin"
-							content={rekaman.waktu_mulai_mesin}
-						/>
-						<DetailItem
-							title="Waktu Selesai Mesin"
-							content={rekaman.waktu_selesai_mesin}
-						/>
-						<div>
-							<h2 className="text-sm font-semibold mb-1.5">Gambar</h2>
-							{rekaman.gambar && (
-								<img
-									src={rekaman.gambar}
-									alt="Gambar"
-									className="w-20 h-20 object-cover rounded-md"
-								/>
-							)}
+			<div className="flex justify-center items-center w-full">
+				<Card className="rounded-md w-fit">
+					<CardHeader>
+						<CardTitle className="text-xl font-bold">Detail Rekaman</CardTitle>
+						<CardDescription>Detail rekaman untuk ID: {id}</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<div className="flex flex-col space-y-4 w-fit">
+							<DetailItem title="PIC" content={rekaman.nama} />
+							<DetailItem title="Line" content={rekaman.line} />
+							<DetailItem title="Mesin" content={rekaman.mesin} />
+							<DetailItem
+								title="Kerusakan"
+								content={rekaman.deskripsi_kerusakan}
+							/>
+							<DetailItem title="Tindakan" content={rekaman.tindakan} />
+							<DetailItem title="Analisa" content={rekaman.analisa} />
+							<DetailItem
+								title="Start Trouble"
+								content={rekaman.waktu_mulai_mesin}
+							/>
+							<DetailItem
+								title="Stop Touble"
+								content={rekaman.waktu_selesai_mesin}
+							/>
+							<div className="">
+								<h2 className="text-sm font-semibold mb-1.5">Gambar</h2>
+								<div className="flex justify-center items-center">
+									{rekaman.gambar && (
+										<img
+											src={rekaman.gambar}
+											alt="Gambar"
+											className="w-96 h-96 object-cover rounded-md"
+										/>
+									)}
+								</div>
+							</div>
 						</div>
-					</div>
-				</CardContent>
-			</Card>
+					</CardContent>
+				</Card>
+			</div>
 		</div>
 	);
 };

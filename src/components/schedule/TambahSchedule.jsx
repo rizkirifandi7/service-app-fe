@@ -40,6 +40,7 @@ const FormSchema = z.object({
 	mesin: z.string().nonempty("Mesin harus diisi."),
 	kerusakan: z.string().nonempty("Kerusakan harus diisi."),
 	maintenance: z.string().nonempty("Maintenance harus diisi."),
+	overtime: z.any(),
 	tanggal: z.any(),
 	status: z.any(),
 });
@@ -70,6 +71,7 @@ const TambahSchedule = ({ fetchData }) => {
 			maintenance: "",
 			tanggal: "",
 			status: "",
+			overtime: "",
 		},
 	});
 
@@ -84,6 +86,7 @@ const TambahSchedule = ({ fetchData }) => {
 			formData.append("maintenance", data.maintenance);
 			formData.append("tanggal", data.tanggal);
 			formData.append("status", data.status);
+			formData.append("overtime", data.overtime);
 
 			const response = await addDataSchedule("schedule", data);
 
@@ -175,7 +178,6 @@ const TambahSchedule = ({ fetchData }) => {
 											</SelectItem>
 											<SelectItem value="Docking">Docking</SelectItem>
 											<SelectItem value="Gas Charge">Gas Charge</SelectItem>
-											<SelectItem value="Clocking">Clocking</SelectItem>
 											<SelectItem value="Vacuum Pump">Vacuum Pump</SelectItem>
 											<SelectItem value="Running Test">Running Test</SelectItem>
 											<SelectItem value="Final">Final</SelectItem>
@@ -239,7 +241,7 @@ const TambahSchedule = ({ fetchData }) => {
 								</FormItem>
 							)}
 						/>
-						<div className="w-fit space-y-2">
+						<div className="w-full space-y-2">
 							<Label>Tanggal Perbaikan</Label>
 							<Input
 								type="date"
@@ -247,6 +249,30 @@ const TambahSchedule = ({ fetchData }) => {
 								{...form.register("tanggal")}
 							/>
 						</div>
+						<FormField
+							control={form.control}
+							name="overtime"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Overtime</FormLabel>
+									<Select
+										onValueChange={field.onChange}
+										defaultValue={field.value}
+									>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue placeholder="Pilih Overtime" />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											<SelectItem value="Lembur">Lembur</SelectItem>
+											<SelectItem value="Tidak Lembur">Tidak Lembur</SelectItem>
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<FormField
 							control={form.control}
 							name="status"

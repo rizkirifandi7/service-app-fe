@@ -183,7 +183,6 @@ const TambahRekaman = ({ fetchData }) => {
 													</SelectItem>
 													<SelectItem value="Docking">Docking</SelectItem>
 													<SelectItem value="Gas Charge">Gas Charge</SelectItem>
-													<SelectItem value="Clocking">Clocking</SelectItem>
 													<SelectItem value="Vacuum Pump">
 														Vacuum Pump
 													</SelectItem>
@@ -199,7 +198,7 @@ const TambahRekaman = ({ fetchData }) => {
 								/>
 								<div className="flex items-center justify-between w-full gap-4">
 									<div className="w-full space-y-2">
-										<Label>Waktu Mulai Mesin</Label>
+										<Label>Start Trouble</Label>
 										<Input
 											type="time"
 											{...form.register("waktu_mulai_mesin")}
@@ -207,7 +206,7 @@ const TambahRekaman = ({ fetchData }) => {
 									</div>
 									<span className="pt-7">-</span>
 									<div className="w-full space-y-2">
-										<Label>Waktu selesai Mesin</Label>
+										<Label>Stop Trouble</Label>
 										<Input
 											type="time"
 											{...form.register("waktu_selesai_mesin")}
