@@ -10,6 +10,7 @@ import {
 	CardTitle,
 } from "../ui/card";
 import { ArrowLeft } from "lucide-react";
+import { formatDate } from "@/lib/formatDate";
 
 const DetailItem = ({ title, content }) => (
 	<div className="max-w-7xl">
@@ -62,13 +63,14 @@ const DetailRekaman = () => {
 							<DetailItem title="Tindakan" content={rekaman.tindakan} />
 							<DetailItem title="Analisa" content={rekaman.analisa} />
 							<DetailItem
-								title="Start Trouble"
-								content={rekaman.waktu_mulai_mesin}
+								title="Tanggal"
+								content={formatDate(rekaman.tanggal)}
 							/>
 							<DetailItem
-								title="Stop Touble"
-								content={rekaman.waktu_selesai_mesin}
+								title="Start Trouble"
+								content={rekaman.start_trouble}
 							/>
+							<DetailItem title="Stop Touble" content={rekaman.stop_trouble} />
 							<div className="">
 								<h2 className="text-sm font-semibold mb-1.5">Gambar</h2>
 								<div className="flex justify-center items-center">

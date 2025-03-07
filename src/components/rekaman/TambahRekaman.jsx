@@ -44,8 +44,9 @@ const FormSchema = z.object({
 	gambar: z.any(),
 	tindakan: z.string().nonempty("Tindakan harus diisi."),
 	analisa: z.string().nonempty("Analisa harus diisi."),
-	waktu_mulai_mesin: z.any(),
-	waktu_selesai_mesin: z.any(),
+	tanggal: z.any(),
+	start_trouble: z.any(),
+	stop_trouble: z.any(),
 });
 
 const TambahRekaman = ({ fetchData }) => {
@@ -75,8 +76,9 @@ const TambahRekaman = ({ fetchData }) => {
 			gambar: "",
 			tindakan: "",
 			analisa: "",
-			waktu_mulai_mesin: "",
-			waktu_selesai_mesin: "",
+			tanggal: "",
+			start_trouble: "",
+			stop_trouble: "",
 		},
 	});
 
@@ -91,8 +93,9 @@ const TambahRekaman = ({ fetchData }) => {
 			formData.append("gambar", data.gambar[0]);
 			formData.append("tindakan", data.tindakan);
 			formData.append("analisa", data.analisa);
-			formData.append("waktu_mulai_mesin", data.waktu_mulai_mesin);
-			formData.append("waktu_selesai_mesin", data.waktu_selesai_mesin);
+			formData.append("tanggal", data.tanggal);
+			formData.append("start_trouble", data.start_trouble);
+			formData.append("stop_trouble", data.stop_trouble);
 
 			const response = await addData("laporan", formData, token);
 
@@ -201,7 +204,7 @@ const TambahRekaman = ({ fetchData }) => {
 										<Label>Start Trouble</Label>
 										<Input
 											type="time"
-											{...form.register("waktu_mulai_mesin")}
+											{...form.register("start_trouble")}
 										/>
 									</div>
 									<span className="pt-7">-</span>
@@ -209,9 +212,17 @@ const TambahRekaman = ({ fetchData }) => {
 										<Label>Stop Trouble</Label>
 										<Input
 											type="time"
-											{...form.register("waktu_selesai_mesin")}
+											{...form.register("stop_trouble")}
 										/>
 									</div>
+								</div>
+								<div className="">
+									<Label>Tanggal</Label>
+									<Input
+										type="date"
+										{...form.register("tanggal")}
+										className="shadow-none"
+									/>
 								</div>
 								<div className="space-y-2">
 									<Label>Gambar</Label>

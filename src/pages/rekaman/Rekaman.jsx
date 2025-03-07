@@ -114,21 +114,34 @@ const Rekaman = () => {
 				},
 			},
 			{
-				accessorKey: "waktu_mulai_mesin",
+				accessorKey: "tanggal",
+				header: "Tanggal",
+				cell: ({ row }) => {
+					const date = row.getValue("tanggal");
+					const formattedDate = date
+						? new Date(date).toLocaleDateString("id-ID", {
+								weekday: "long", // Adds day name (Senin, Selasa, etc.)
+								day: "2-digit",
+								month: "2-digit",
+								year: "numeric",
+						  })
+						: "-";
+
+					return <div className="capitalize">{formattedDate}</div>;
+				},
+			},
+			{
+				accessorKey: "start_trouble",
 				header: "Start Trouble",
 				cell: ({ row }) => (
-					<div className="capitalize">
-						{row.getValue("waktu_mulai_mesin")} WIB
-					</div>
+					<div className="capitalize">{row.getValue("start_trouble")} WIB</div>
 				),
 			},
 			{
-				accessorKey: "waktu_selesai_mesin",
+				accessorKey: "stop_trouble",
 				header: "Stop Trouble",
 				cell: ({ row }) => (
-					<div className="capitalize">
-						{row.getValue("waktu_selesai_mesin")} WIB
-					</div>
+					<div className="capitalize">{row.getValue("stop_trouble")} WIB</div>
 				),
 			},
 			{

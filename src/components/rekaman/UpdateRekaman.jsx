@@ -43,8 +43,9 @@ const FormSchema = z.object({
 	gambar: z.any(),
 	tindakan: z.string().nonempty("Tindakan harus diisi."),
 	analisa: z.string().nonempty("Analisa harus diisi."),
-	waktu_mulai_mesin: z.any(),
-	waktu_selesai_mesin: z.any(),
+	tanggal: z.any(),
+	start_trouble: z.any(),
+	stop_trouble: z.any(),
 });
 
 const UpdateRekaman = ({ fetchData, rowData, id }) => {
@@ -73,8 +74,9 @@ const UpdateRekaman = ({ fetchData, rowData, id }) => {
 			gambar: rowData.gambar,
 			tindakan: rowData.tindakan,
 			analisa: rowData.analisa,
-			waktu_mulai_mesin: rowData.waktu_mulai_mesin,
-			waktu_selesai_mesin: rowData.waktu_selesai_mesin,
+			tanggal: rowData.tanggal,
+			start_trouble: rowData.start_trouble,
+			stop_trouble: rowData.stop_trouble,
 		},
 	});
 
@@ -89,8 +91,9 @@ const UpdateRekaman = ({ fetchData, rowData, id }) => {
 			formData.append("gambar", data.gambar[0]);
 			formData.append("tindakan", data.tindakan);
 			formData.append("analisa", data.analisa);
-			formData.append("waktu_mulai_mesin", data.waktu_mulai_mesin);
-			formData.append("waktu_selesai_mesin", data.waktu_selesai_mesin);
+			formData.append("tanggal", data.tanggal);
+			formData.append("start_trouble", data.start_trouble);
+			formData.append("stop_trouble", data.stop_trouble);
 
 			const response = await updateData(`laporan/${id}`, formData);
 
@@ -188,20 +191,18 @@ const UpdateRekaman = ({ fetchData, rowData, id }) => {
 								/>
 								<div className="flex items-center justify-between w-full gap-4">
 									<div className="w-full space-y-2">
-										<Label>Waktu Mulai Mesin</Label>
-										<Input
-											type="time"
-											{...form.register("waktu_mulai_mesin")}
-										/>
+										<Label>Start Trouble</Label>
+										<Input type="time" {...form.register("start_trouble")} />
 									</div>
 									<span className="pt-7">-</span>
 									<div className="w-full space-y-2">
-										<Label>Waktu selesai Mesin</Label>
-										<Input
-											type="time"
-											{...form.register("waktu_selesai_mesin")}
-										/>
+										<Label>Stop Trouble</Label>
+										<Input type="time" {...form.register("stop_trouble")} />
 									</div>
+								</div>
+								<div className="w-full space-y-2">
+									<Label>Tanggal</Label>
+									<Input type="date" {...form.register("tanggal")} />
 								</div>
 								<div className="space-y-2">
 									<Label>Gambar</Label>
