@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { formatDate } from "@/lib/formatDate";
 
 // Form schema
 const FormSchema = z.object({
@@ -60,11 +61,28 @@ const UnduhRekaman = () => {
 	}, []);
 
 	const filterDataByDate = (startDate, endDate) => {
+		// Create normalized date objects (set to midnight)
+		const normalizeDate = (date) => {
+			const newDate = new Date(date);
+			newDate.setHours(0, 0, 0, 0);
+			return newDate;
+		};
+
+		const startDateNormalized = startDate ? normalizeDate(startDate) : null;
+		const endDateNormalized = endDate ? normalizeDate(endDate) : null;
+
+		// Add a day to end date to include the full end date
+		if (endDateNormalized) {
+			const nextDay = new Date(endDateNormalized);
+			nextDay.setDate(nextDay.getDate() + 1);
+			endDateNormalized.setTime(nextDay.getTime());
+		}
+
 		const filteredData = dataRekaman.filter((item) => {
-			const rekamanDate = new Date(item.createdAt);
+			const rekamanDate = normalizeDate(item.tanggal);
 			return (
-				(!startDate || rekamanDate >= new Date(startDate)) &&
-				(!endDate || rekamanDate <= new Date(endDate))
+				(!startDateNormalized || rekamanDate >= startDateNormalized) &&
+				(!endDateNormalized || rekamanDate < endDateNormalized)
 			);
 		});
 
@@ -79,8 +97,9 @@ const UnduhRekaman = () => {
 				tindakan: item.tindakan,
 				gambar: item.gambar,
 				analisa: item.analisa,
-				waktu_mulai_mesin: item.waktu_mulai_mesin,
-				waktu_selesai_mesin: item.waktu_selesai_mesin,
+				tanggal: item.tanggal,
+				start_trouble: item.start_trouble,
+				stop_trouble: item.stop_trouble,
 			});
 		});
 
@@ -89,6 +108,7 @@ const UnduhRekaman = () => {
 
 	const exportJsonToExcel = (startDate, endDate) => {
 		const extractedData = filterDataByDate(startDate, endDate);
+
 		if (extractedData.length === 0) {
 			toast.error("Tidak ada data untuk tanggal yang dipilih.");
 			return;
@@ -102,8 +122,9 @@ const UnduhRekaman = () => {
 			"Tindakan",
 			"Gambar",
 			"Analisa",
-			"Waktu Mulai Mesin",
-			"Waktu Selesai Mesin",
+			"Tanggal",
+			"Start Trouble",
+			"Stop Trouble",
 		];
 
 		const formattedData = extractedData.map((item) => ({
@@ -114,8 +135,9 @@ const UnduhRekaman = () => {
 			Tindakan: item.tindakan,
 			Gambar: item.gambar,
 			Analisa: item.analisa,
-			"Waktu Mulai Mesin": item.waktu_mulai_mesin,
-			"Waktu Selesai Mesin": item.waktu_selesai_mesin,
+			Tanggal: formatDate(item.tanggal),
+			"Start Trouble": item.start_trouble,
+			"Stop Trouble": item.stop_trouble,
 		}));
 
 		const workbook = XLSX.utils.book_new();
